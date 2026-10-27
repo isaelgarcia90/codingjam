@@ -31,8 +31,16 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="max-w-xl mx-auto px-4 py-3 flex items-center justify-between">
         {/* Brand & Profile info */}
         <div className="flex items-center space-x-3">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30">
-            <Wrench className="w-6 h-6 text-white" />
+          <div className="w-11 h-11 rounded-xl overflow-hidden bg-gradient-to-tr from-orange-600 to-amber-500 flex items-center justify-center shadow-lg shadow-orange-500/30 border border-orange-400/40">
+            <img
+              src="/logo.png"
+              alt="MaestroPro Logo"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                // Fallback to Wrench icon if image fails
+                (e.currentTarget as HTMLElement).style.display = 'none';
+              }}
+            />
           </div>
           <div>
             <div className="flex items-center space-x-2">
