@@ -30,16 +30,6 @@ export const generateQuoteWithGemini = async (
 
   const genAI = new GoogleGenerativeAI(apiKey.trim());
 
-  // Use gemini-2.5-flash or gemini-1.5-flash for speed and multimodal capability
-  const model = genAI.getGenerativeModel({
-    model: 'gemini-2.5-flash',
-    generationConfig: {
-      responseMimeType: 'application/json',
-      temperature: 0.2,
-    },
-    systemInstruction: MAESTRO_SYSTEM_PROMPT,
-  });
-
   const promptParts: any[] = [];
 
   // Add contextual information
@@ -75,9 +65,37 @@ Instrucciones adicionales / Notas de voz transcritas:
     });
   }
 
+  const candidateModels = ['gemini-3.8-flash', 'gemini-1.5-flash', 'gemini-2.0-flash'];
+  let text = '';
+  let lastError: any = null;
+
+  for (const modelName of candidateModels) {
+    try {
+      const model = genAI.getGenerativeModel({
+        model: modelName,
+        generationConfig: {
+          responseMimeType: 'application/json',
+          temperature: 0.2,
+        },
+        systemInstruction: MAESTRO_SYSTEM_PROMPT,
+      });
+
+      const result = await model.generateContent(promptParts);
+      text = result.response.text();
+      if (text) break;
+    } catch (err: any) {
+      console.warn(`Fallo con el modelo ${modelName}, intentando siguiente modelo...`, err);
+      lastError = err;
+    }
+  }
+
+  if (!text) {
+    throw new Error(
+      `Error al procesar con Gemini: ${lastError?.message || 'No se pudo generar respuesta con los modelos disponibles.'}`
+    );
+  }
+
   try {
-    const result = await model.generateContent(promptParts);
-    const text = result.response.text();
     const parsed = JSON.parse(text);
 
     // Build unique quote object
