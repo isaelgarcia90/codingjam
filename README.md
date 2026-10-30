@@ -2,7 +2,9 @@
 
 > **Proyecto para Mexico Tech Week Coding Jam**  
 > **Categoría:** AI for Good (Inclusión Económica, Preparación Laboral y Reducción de la Brecha Digital)  
-> **Tecnologías:** Google Gemini Multimodal API (Audio + Visión + Structured Output), React, TypeScript, Tailwind CSS, jsPDF.
+> **Tecnologías:** Google Gemini Multimodal API (Audio + Visión + Structured Output), React, TypeScript, Tailwind CSS, jsPDF.  
+> 
+> 🌐 **Live Demo Oficial:** [https://codingjam.vercel.app/](https://codingjam.vercel.app/)
 
 ---
 
